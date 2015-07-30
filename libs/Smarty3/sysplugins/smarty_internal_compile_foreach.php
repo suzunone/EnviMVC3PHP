@@ -208,8 +208,7 @@ class Smarty_Internal_Compile_Foreach extends Smarty_Internal_CompileBase
                 }
             }
         }
-        $itemName = trim($item,"'\"");
-        $output .= "\$foreach_{$itemName}_Sav = \$_smarty_tpl->tpl_vars[$item];\n";
+        $output .= "\$foreachItemSav = \$_smarty_tpl->tpl_vars[$item];\n";
         $output .= "?>";
 
         return $output;
@@ -240,9 +239,8 @@ class Smarty_Internal_Compile_Foreachelse extends Smarty_Internal_CompileBase
 
         list($openTag, $nocache, $item, $key, $foo) = $this->closeTag($compiler, array('foreach'));
         $this->openTag($compiler, 'foreachelse', array('foreachelse', $nocache, $item, $key, false));
-        $itemName = trim($item,"'\"");
         $output = "<?php\n";
-        $output .= "\$_smarty_tpl->tpl_vars[$item] = \$foreach_{$itemName}_Sav;\n";
+        $output .= "\$_smarty_tpl->tpl_vars[$item] = \$foreachItemSav;\n";
         $output .= "}\n";
         $output .= "if (!\$_smarty_tpl->tpl_vars[$item]->_loop) {\n?>";
         return $output;
@@ -276,10 +274,9 @@ class Smarty_Internal_Compile_Foreachclose extends Smarty_Internal_CompileBase
         }
 
         list($openTag, $compiler->nocache, $item, $key, $restore) = $this->closeTag($compiler, array('foreach', 'foreachelse'));
-        $itemName = trim($item,"'\"");
         $output = "<?php\n";
         if ($restore) {
-            $output .= "\$_smarty_tpl->tpl_vars[$item] = \$foreach_{$itemName}_Sav;\n";
+            $output .= "\$_smarty_tpl->tpl_vars[$item] = \$foreachItemSav;\n";
         }
         $output .= "}\n?>";
 

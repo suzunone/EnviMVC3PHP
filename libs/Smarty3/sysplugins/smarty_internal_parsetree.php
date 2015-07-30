@@ -16,14 +16,12 @@
  */
 abstract class Smarty_Internal_ParseTree
 {
-
     /**
      * Parser object
      *
      * @var object
      */
     public $parser;
-
     /**
      * Buffer content
      *

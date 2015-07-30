@@ -1,7 +1,7 @@
 <?php
 /**
- * Smarty Internal Plugin Templateparser Parse Tree
- * These are classes to build parse tree in the template parser
+ * Smarty Internal Plugin Templateparser Parsetrees
+ * These are classes to build parsetrees in the template parser
  *
  * @package    Smarty
  * @subpackage Compiler
@@ -18,7 +18,6 @@
  */
 class Smarty_Internal_ParseTree_Template extends Smarty_Internal_ParseTree
 {
-
     /**
      * Array of template elements
      *
@@ -45,10 +44,8 @@ class Smarty_Internal_ParseTree_Template extends Smarty_Internal_ParseTree
     {
         if (!empty($subtree->subtrees)) {
             $this->subtrees = array_merge($this->subtrees, $subtree->subtrees);
-        } else {
-            if ($subtree->data !== '') {
-                $this->subtrees[] = $subtree;
-            }
+        } else if ($subtree->data !== '') {
+            $this->subtrees[] = $subtree;
         }
     }
 
@@ -73,7 +70,7 @@ class Smarty_Internal_ParseTree_Template extends Smarty_Internal_ParseTree
                 if ($subtree == '') {
                     continue;
                 }
-                $code .= preg_replace('/((<%)|(%>)|(<\?php)|(<\?)|(\?>)|(<\/?script))/', "<?php echo '\$1'; ?>\n", $subtree);
+                $code .= preg_replace('/(<%|%>|<\?php|<\?|\?>|<\/?script)/', "<?php echo '\$1'; ?>\n", $subtree);
                 continue;
             }
             if ($this->subtrees[$key] instanceof Smarty_Internal_ParseTree_Tag) {
@@ -83,7 +80,13 @@ class Smarty_Internal_ParseTree_Template extends Smarty_Internal_ParseTree
                     if ($this->subtrees[$key]->data == '') {
                         continue;
                     }
-                    $subtree = $this->parser->compiler->appendCode($subtree, $this->subtrees[$key]->to_smarty_php());
+                    $newCode = $this->subtrees[$key]->to_smarty_php();
+                    if ((preg_match('/^\s*<\?php\s+/', $newCode) && preg_match('/\s*\?>\s*$/', $subtree))) {
+                        $subtree = preg_replace('/\s*\?>\s*$/', "\n", $subtree);
+                        $subtree .= preg_replace('/^\s*<\?php\s+/', '', $newCode);
+                    } else {
+                        $subtree .= $newCode;
+                    }
                 }
                 if ($subtree == '') {
                     continue;
