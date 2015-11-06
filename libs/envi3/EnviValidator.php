@@ -498,12 +498,12 @@ class EnviValidator
     {
         $is_error = false;
         $res = array();
-        foreach ($this->_validation_list as $validator_name => $validation_datas) {
+        foreach ($this->_validation_list as $validator_name => &$validation_data) {
             if ($this->isError($this->execute($validator_name, false))){
                 $is_error = true;
             }
             //結果
-            $res[$validator_name] =& $this->_validation_list[$validator_name][self::VALIDATE_DATA];
+            $res[$validator_name] = &$validation_data[self::VALIDATE_DATA];
         }
 
         if ($is_error) {

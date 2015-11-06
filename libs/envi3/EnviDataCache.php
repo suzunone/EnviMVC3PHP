@@ -83,7 +83,7 @@ class EnviDataCache
             if ($data instanceof EnviOrMapBase) {
                 $ttl = $data->cache_ttl ? $data->cache_ttl : 120;
             }
-            $res = apc_store($key, $data, $ttl);
+            apc_store($key, $data, $ttl);
         }
         return false;
     }
