@@ -120,6 +120,19 @@ abstract class EnviOrMapBase
     /* ----------------------------------------- */
 
     /**
+     * +-- Pkeyの一覧を取得する
+     *
+     * @access      public
+     * @return      array
+     * @since       3.4.16
+     */
+    public function getPkeys()
+    {
+        return $this->pkeys;
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- DBからセレクトしたデータをオブジェクトにセットする
      *
      * このMethodを使用してセットすると、saveがInsertではなくUpdateになります。
@@ -310,12 +323,12 @@ abstract class EnviOrMapBase
     /**
      * +-- パスカライズする
      *
-     * @access      protected
+     * @access      public
      * @param       string $snake_case
      * @return      string
      * @since       3.0.0
      */
-    protected function pascalize($snake_case)
+    public function pascalize($snake_case)
     {
         $pascal_case = strtolower($snake_case);
         $pascal_case = str_replace('_', ' ', $pascal_case);

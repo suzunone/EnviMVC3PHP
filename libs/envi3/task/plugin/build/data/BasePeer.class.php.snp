@@ -351,7 +351,12 @@ class Base%%class_name%%Peer
         $res = $dbi->getRow('%%sql%%', array(%%args%%));
         $ormap = new %%class_name%%;
         if (!$res) {
-            return $ormap ;
+            $args = array(%%args%%);
+            foreach ($ormap->getPkeys() as $k => $pkey_name) {
+                $method = 'set'.$ormap->pascalize($pkey_name);
+                $ormap->$method($args[$k]);
+            }
+            return $ormap;
         }
         $ormap->hydrate($res);
         return $ormap;
@@ -375,6 +380,11 @@ class Base%%class_name%%Peer
         $res = $dbi->getRow('%%sql%%', array(%%args%%));
         $ormap = new %%class_name%%;
         if (!$res) {
+            $args = array(%%args%%);
+            foreach ($ormap->getPkeys() as $k => $pkey_name) {
+                $method = 'set'.$ormap->pascalize($pkey_name);
+                $ormap->$method($args[$k]);
+            }
             return $ormap;
         }
         $ormap->hydrate($res);
@@ -398,6 +408,11 @@ class Base%%class_name%%Peer
         $res = $dbi->getRow('%%sql%% FOR UPDATE', array(%%args%%));
         $ormap = new %%class_name%%;
         if (!$res) {
+            $args = array(%%args%%);
+            foreach ($ormap->getPkeys() as $k => $pkey_name) {
+                $method = 'set'.$ormap->pascalize($pkey_name);
+                $ormap->$method($args[$k]);
+            }
             return $ormap;
         }
         $ormap->hydrate($res);
@@ -439,5 +454,5 @@ class Base%%class_name%%Peer
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
     /* ----------------------------------------- */
-    
+
 }
