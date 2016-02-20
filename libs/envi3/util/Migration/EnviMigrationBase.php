@@ -105,7 +105,7 @@ abstract class EnviMigrationBase
      * @return      void
      * @see EnviMigrationBase::change()
      * @see EnviMigrationBase::down()
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::safeUp()
      */
     abstract public function up();
     /* ----------------------------------------- */
@@ -140,7 +140,7 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::safeUp()
      * @see EnviMigrationBase::safeDown()
      */
      public function safeChange()
@@ -156,7 +156,7 @@ abstract class EnviMigrationBase
      * @see EnviMigrationBase::safeChange()
      * @see EnviMigrationBase::safeDown()
      */
-     public function saveUp()
+     public function safeUp()
      {
      }
     /* ----------------------------------------- */
@@ -167,7 +167,7 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::safeUp()
      * @see EnviMigrationBase::safeChange()
      */
     public function safeDown()
@@ -607,6 +607,7 @@ abstract class EnviMigrationBase
      * @access      protected
      * @param       string $instance_name
      * @return      void
+     * @since       3.4.20.0
      */
     protected function resetInstance($instance_name)
     {
